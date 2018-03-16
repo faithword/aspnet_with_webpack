@@ -1,7 +1,12 @@
-﻿const path = require("path");
-const webpack = require("webpack");
-const Merge = require("webpack-merge");
-const CommonConfig = require("./webpack.common.js");
+﻿var path = require("path");
+var webpack = require("webpack");
+var Merge = require("webpack-merge");
+var CommonConfig = require("./webpack.common.js");
+var ExtractTextPlugin = require("extract-text-webpack-plugin");
+
+var extractLess = new ExtractTextPlugin({
+    filename: "[name].[contenthash].css"
+});
 
 module.exports = Merge(CommonConfig, {
     devtool: "inline-source-map",
@@ -19,18 +24,28 @@ module.exports = Merge(CommonConfig, {
     },
 
     module: {
-        loaders: [
+        rules: [
             // All css files will be handled here
             {
                 test: /\.css$/,
-                use: ["style-loader", "css-loader"]
+                use: extractLess.extract({ fallback: "style-loader", use: ["css-loader"] })
             },
 
             // All files with ".less" will be handled and transpiled to css
             {
                 test: /\.less$/,
-                use: ["style-loader", "css-loader", "less-loader"]
-            }
+                use: extractLess.extract({
+                    use: [{
+                        loader: "css-loader", options: {
+                            sourceMap: true
+                        }
+                    }, {
+                        loader: "less-loader", options: {
+                            sourceMap: true
+                        }
+                    }]
+                })
+            },
         ]
     },
 
@@ -39,6 +54,9 @@ module.exports = Merge(CommonConfig, {
             "process.env": {
                 "NODE_ENV": JSON.stringify("development")
             }
-        })
-    ]),
+        }),
+
+        // Write out CSS bundle to its own file:
+        extractLess
+    ])
 })

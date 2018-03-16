@@ -5,6 +5,7 @@ using System.Web;
 using System.Web.Mvc;
 using System.Web.Optimization;
 using System.Web.Routing;
+using AspAndWebpack.Helpers;
 
 namespace AspAndWebpack
 {
@@ -15,6 +16,10 @@ namespace AspAndWebpack
             AreaRegistration.RegisterAllAreas();
             FilterConfig.RegisterGlobalFilters(GlobalFilters.Filters);
             RouteConfig.RegisterRoutes(RouteTable.Routes);
+
+            // Configure the asset map
+            //WebpackAssetHelper.Path = "dist";
+            //WebpackAssetHelper.File = "dist";
         }
     }
 }

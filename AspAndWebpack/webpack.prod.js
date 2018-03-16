@@ -1,15 +1,15 @@
-﻿const path = require("path");
-const webpack = require("webpack");
-const Merge = require("webpack-merge");
-const CommonConfig = require("./webpack.common.js");
-const ExtractTextPlugin = require("extract-text-webpack-plugin");
+﻿var path = require("path");
+var webpack = require("webpack");
+var Merge = require("webpack-merge");
+var CommonConfig = require("./webpack.common.js");
+var ExtractTextPlugin = require("extract-text-webpack-plugin");
 
 // Images, Fonts Loading: https://webpack.js.org/guides/asset-management/
 // LESS Loading: https://webpack.js.org/loaders/less-loader/
 // Code splitting: https://webpack.js.org/guides/code-splitting
 // Caching: https://webpack.js.org/guides/caching/
 
-const extractLess = new ExtractTextPlugin({
+var extractLess = new ExtractTextPlugin({
     filename: "[name].[contenthash].css"
 });
 
@@ -37,7 +37,12 @@ module.exports = Merge(CommonConfig, {
     },
 
     module: {
-        loaders: [          
+        rules: [
+            // Turn off validation due to issue with jquery-validation-unobstrusive - see https://github.com/aspnet/jquery-validation-unobtrusive/issues/79
+            {
+                parser: { amd: false },
+            },
+
             // All css files will be handled here
             {
                 test: /\.css$/,

@@ -1,6 +1,7 @@
-﻿const webpack = require("webpack");
-const CleanWebpackPlugin = require("clean-webpack-plugin");
-const HtmlWebpackPlugin = require("html-webpack-plugin");
+﻿var webpack = require("webpack");
+var CleanWebpackPlugin = require("clean-webpack-plugin");
+var HtmlWebpackPlugin = require("html-webpack-plugin");
+var ManifestpPlugin = require("webpack-manifest-plugin");
 
 module.exports = {
     target: "web",
@@ -11,7 +12,7 @@ module.exports = {
     },
 
     module: {
-        loaders: [
+        rules: [
             // All files with a ".ts" or ".tsx" extension will be handled by "awesome-typescript-loader".
             { test: /.ts$/, loader: "awesome-typescript-loader" },
 
@@ -19,7 +20,13 @@ module.exports = {
             {
                 test: /\.(png|svg|jpg|gif)$/,
                 use: [
-                    "file-loader"
+                    {
+                        loader: "file-loader",
+                        options: {
+                            name: "[name]_[hash:7].[ext]",
+                            outputPath: "images/"
+                        }
+                    }
                 ]
             },
 
@@ -28,7 +35,11 @@ module.exports = {
                 test: /\.(woff|woff2|eot|ttf|otf)$/,
                 use: [
                     {
-                        loader: "file-loader"
+                        loader: "file-loader",
+                        options: {
+                            name: "[name].[ext]",
+                            outputPath: "fonts/",
+                        }
                     }
                 ]
             },
@@ -56,6 +67,11 @@ module.exports = {
 
         // avoid publishing when compilation failed.
         new webpack.NoEmitOnErrorsPlugin(),
+
+        new ManifestpPlugin({
+            fileName: "build-manifest.json",
+            //extensions: [".js", ".css", ".svg"]
+        }),
 
         new HtmlWebpackPlugin({
             inject: "body",
