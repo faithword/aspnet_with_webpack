@@ -1,7 +1,7 @@
 ﻿var webpack = require("webpack");
 var CleanWebpackPlugin = require("clean-webpack-plugin");
 var HtmlWebpackPlugin = require("html-webpack-plugin");
-var ManifestpPlugin = require("webpack-manifest-plugin");
+var ManifestPlugin = require("webpack-manifest-plugin");
 
 module.exports = {
     target: "web",
@@ -31,6 +31,21 @@ module.exports = {
             },
 
             // All font files will be handled here
+            // the url-loader uses DataUrls. 
+            // the file-loader emits files. 
+            {
+                test: /\.woff(2)?(\?v=[0-9]\.[0-9]\.[0-9])?$/,
+                loader: "url-loader?limit=10000&mimetype=application/font-woff"
+            },
+            {
+                test: /\.(ttf|eot|svg)(\?v=[0-9]\.[0-9]\.[0-9])?$/,
+                use: [
+                    {
+                        loader: "file-loader"
+                    }
+                ]
+            },
+            /*
             {
                 test: /\.(woff|woff2|eot|ttf|otf)$/,
                 use: [
@@ -38,11 +53,12 @@ module.exports = {
                         loader: "file-loader",
                         options: {
                             name: "[name].[ext]",
-                            outputPath: "fonts/",
+                            outputPath: "fonts/"
                         }
                     }
                 ]
             },
+            */
 
             // All files with ".html" will be handled 
             { test: /\.html$/, loader: "html-loader" },

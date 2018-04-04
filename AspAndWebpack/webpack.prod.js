@@ -40,7 +40,7 @@ module.exports = Merge(CommonConfig, {
         rules: [
             // Turn off validation due to issue with jquery-validation-unobstrusive - see https://github.com/aspnet/jquery-validation-unobtrusive/issues/79
             {
-                parser: { amd: false },
+                parser: { amd: false }
             },
 
             // All css files will be handled here
