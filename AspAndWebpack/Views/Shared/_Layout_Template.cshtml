@@ -7,6 +7,10 @@
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>@ViewBag.Title - My ASP.NET Application</title>
+    <% for (var css in htmlWebpackPlugin.files.css) { %>
+    <link rel="stylesheet" href="<%= htmlWebpackPlugin.files.css[css] %>" />
+    <% } %>
+    @RenderSection("styles", required: false)
 </head>
 <body>
     <div class="navbar navbar-inverse navbar-fixed-top">
@@ -35,11 +39,9 @@
             <p>&copy; @DateTime.Now.Year - My ASP.NET Application</p>
         </footer>
     </div>
+    <% for (var chunk in htmlWebpackPlugin.files.chunks) { %>
+    <script type="text/javascript" src="<%= htmlWebpackPlugin.files.chunks[chunk].entry %>" ></script>
+    <% } %>
+    @RenderSection("scripts", required: false)
 </body>
-@*
-    If you want to call a function from within the webpack bundle on a View, then this RenderSection needs to be moved
-    here outside and after body. This is because webpack injects script/link tags at the end of the body, so this section
-    needs to be here for the ordering to be right.
-*@
-@RenderSection("scripts", required: false)
 </html>

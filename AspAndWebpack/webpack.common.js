@@ -84,13 +84,13 @@ module.exports = {
         // avoid publishing when compilation failed.
         new webpack.NoEmitOnErrorsPlugin(),
 
-        new ManifestpPlugin({
+        new ManifestPlugin({
             fileName: "build-manifest.json",
             //extensions: [".js", ".css", ".svg"]
         }),
 
         new HtmlWebpackPlugin({
-            inject: "body",
+            inject: false,
             filename: "../Views/Shared/_Layout.cshtml",
             template: "./Views/Shared/_Layout_Template.cshtml"
         })
